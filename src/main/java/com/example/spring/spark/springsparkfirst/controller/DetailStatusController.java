@@ -24,10 +24,10 @@ public class DetailStatusController {
         long workDuration = System.currentTimeMillis() - service.startCollector;
         Integer detailLimit = 100000;
         long workDurationLimit = 120000;
+        service.collectDetailStatus(detailStatus);
         if (service.details >= detailLimit || workDuration >= workDurationLimit) {
             service.processingDetailStatuses();
         }
-        service.collectDetailStatus(detailStatus);
         return new ResponseEntity<>("collected", HttpStatus.OK);
     }
 }

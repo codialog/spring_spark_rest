@@ -3,7 +3,8 @@ package com.example.spring.spark.springsparkfirst.service;
 import com.example.spring.spark.springsparkfirst.model.DetailStatus;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.storage.StorageLevel;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,19 +25,19 @@ public class DetailStatusService {
     public void collectDetailStatus(DetailStatus detailStatus) {
         detailStatuses.add(detailStatus);
         details++;
-        System.out.println(details);
     }
 
-    public JavaRDD<DetailStatus> processingDetailStatuses() throws Exception {
+    public DataFrame processingDetailStatuses() throws Exception {
         long processingLimitDuration = 60000;
         long startProcessing = System.currentTimeMillis();
-        JavaRDD<DetailStatus> rdd = sc.parallelize(this.detailStatuses).persist(StorageLevel.MEMORY_AND_DISK());
+        SQLContext sqlContext  = new SQLContext(sc);
+        DataFrame dataFrame = sqlContext.createDataFrame(this.detailStatuses, DetailStatus.class);
         detailStatuses.clear();
         details = 0;
         startCollector = System.currentTimeMillis();
         if (System.currentTimeMillis() - startProcessing > processingLimitDuration) {
             throw new Exception("Processing time limit exceeded");
         }
-        return rdd;
+        return dataFrame;
     }
 }
