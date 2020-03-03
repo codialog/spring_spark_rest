@@ -5,6 +5,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.storage.StorageLevel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class DetailStatusService {
         long startProcessing = System.currentTimeMillis();
         SQLContext sqlContext  = new SQLContext(sc);
         DataFrame dataFrame = sqlContext.createDataFrame(this.detailStatuses, DetailStatus.class);
+        dataFrame.persist(StorageLevel.MEMORY_ONLY_SER());
         detailStatuses.clear();
         details = 0;
         startCollector = System.currentTimeMillis();

@@ -16,7 +16,10 @@ public class SparkConfig {
 
     @Bean
     public SparkConf conf() {
-        return new SparkConf().setAppName(appName).setMaster(masterUri);
+        return new SparkConf()
+                .setAppName(appName)
+                .setMaster(masterUri)
+                .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
     }
 
     @Bean
