@@ -22,14 +22,23 @@ class SpringSparkFirstApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
+        String location = "0";
         for (int i = 0; i < 100000; i++) {
+            switch (i) {
+                case 100: location = "100";
+                    break;
+                case 1000: location = "1000";
+                    break;
+                case 10000: location = "10000";
+                    break;
+            }
             try {
                 this.mockMvc.perform(post("/api/detail")
                         .contentType(APPLICATION_JSON)
                         .content(String.valueOf(new JSONObject()
                                 .put("id_sample", "76rtw" + i)
                                 .put("num_id", "ffg#er111" + i)
-                                .put("id_location", "3211.233" + i)
+                                .put("id_location", "3211.233" + location)
                                 .put("id_signal_par", "0xcv11cs")
                                 .put("id_detected", "None")
                                 .put("id_class_det", "req11")))

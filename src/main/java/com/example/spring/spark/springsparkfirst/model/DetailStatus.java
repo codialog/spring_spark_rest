@@ -1,3 +1,4 @@
+
 package com.example.spring.spark.springsparkfirst.model;
 
 import lombok.Data;
